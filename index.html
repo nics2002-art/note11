@@ -15,625 +15,144 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <style>
 :root {
-  --bg: #FFF8F0;
-  --surface: #FFFFFF;
-  --surface2: #FFF3E8;
-  --surface3: #FFE8D0;
-  --accent1: #FF8C69;
-  --accent2: #FFB347;
-  --accent3: #87CEEB;
-  --accent4: #98D8C8;
-  --accent5: #DDA0DD;
-  --text-primary: #3D2B1F;
-  --text-secondary: #8B6355;
-  --text-muted: #C4A090;
-  --border: #F0D9C8;
-  --border2: #E8C9B4;
-  --shadow: rgba(180,120,80,0.12);
-  --sidebar-w: 280px;
-  --notelist-w: 320px;
-  --radius: 16px;
-  --radius-sm: 10px;
-  --toolbar-h: 56px;
+  --bg: #FFF8F0; --surface: #FFFFFF; --surface2: #FFF3E8; --surface3: #FFE8D0;
+  --accent1: #FF8C69; --accent2: #FFB347; --accent3: #87CEEB; --accent4: #98D8C8; --accent5: #DDA0DD;
+  --text-primary: #3D2B1F; --text-secondary: #8B6355; --text-muted: #C4A090;
+  --border: #F0D9C8; --border2: #E8C9B4; --shadow: rgba(180,120,80,0.12);
+  --sidebar-w: 280px; --notelist-w: 320px; --radius: 16px; --radius-sm: 10px; --toolbar-h: 56px;
 }
-
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-
-body {
-  font-family: 'Noto Sans KR', sans-serif;
-  background: var(--bg);
-  color: var(--text-primary);
-  height: 100dvh;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-}
-
-/* ── Login ── */
-#login-screen {
-  position: fixed; inset: 0;
-  background: linear-gradient(145deg, #FFF0E0 0%, #FFE4CC 40%, #F8D5C0 100%);
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  z-index: 1000;
-  gap: 2rem;
-}
-#login-screen .logo-wrap {
-  text-align: center;
-}
-#login-screen .logo-icon {
-  width: 88px; height: 88px;
-  background: linear-gradient(135deg, #FF8C69, #FFB347);
-  border-radius: 28px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 44px; margin: 0 auto 1rem;
-  box-shadow: 0 8px 32px rgba(255,140,105,0.35);
-}
-#login-screen h1 {
-  font-family: 'Gowun Dodum', serif;
-  font-size: 2rem; color: #3D2B1F;
-  margin-bottom: 0.25rem;
-}
-#login-screen p {
-  color: #8B6355; font-size: 0.95rem;
-}
-.google-btn {
-  display: flex; align-items: center; gap: 12px;
-  background: white;
-  border: 1.5px solid #E8C9B4;
-  border-radius: 50px;
-  padding: 14px 28px;
-  font-size: 1rem; font-weight: 500;
-  color: #3D2B1F;
-  cursor: pointer;
-  box-shadow: 0 4px 16px rgba(180,120,80,0.15);
-  transition: transform 0.15s, box-shadow 0.15s;
-}
+body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--text-primary); height: 100dvh; overflow: hidden; display: flex; flex-direction: column; }
+#login-screen { position: fixed; inset: 0; background: linear-gradient(145deg, #FFF0E0 0%, #FFE4CC 40%, #F8D5C0 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 1000; gap: 2rem; }
+#login-screen .logo-wrap { text-align: center; }
+#login-screen .logo-icon { width: 88px; height: 88px; background: linear-gradient(135deg, #FF8C69, #FFB347); border-radius: 28px; display: flex; align-items: center; justify-content: center; font-size: 44px; margin: 0 auto 1rem; box-shadow: 0 8px 32px rgba(255,140,105,0.35); }
+#login-screen h1 { font-family: 'Gowun Dodum', serif; font-size: 2rem; color: #3D2B1F; margin-bottom: 0.25rem; }
+#login-screen p { color: #8B6355; font-size: 0.95rem; }
+.google-btn { display: flex; align-items: center; gap: 12px; background: white; border: 1.5px solid #E8C9B4; border-radius: 50px; padding: 14px 28px; font-size: 1rem; font-weight: 500; color: #3D2B1F; cursor: pointer; box-shadow: 0 4px 16px rgba(180,120,80,0.15); transition: transform 0.15s; }
 .google-btn:active { transform: scale(0.97); }
 .google-btn svg { width: 22px; height: 22px; }
-
-/* ── App Layout ── */
 #app { display: flex; flex: 1; overflow: hidden; }
-
-/* ── Sidebar ── */
-#sidebar {
-  width: var(--sidebar-w);
-  background: var(--surface2);
-  border-right: 1.5px solid var(--border);
-  display: flex; flex-direction: column;
-  overflow: hidden;
-  flex-shrink: 0;
-}
-.sidebar-header {
-  padding: 20px 16px 12px;
-  display: flex; align-items: center; gap: 10px;
-}
-.sidebar-logo {
-  width: 36px; height: 36px;
-  background: linear-gradient(135deg, #FF8C69, #FFB347);
-  border-radius: 10px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 18px;
-  flex-shrink: 0;
-}
-.sidebar-title {
-  font-family: 'Gowun Dodum', serif;
-  font-size: 1.2rem; color: var(--text-primary);
-  font-weight: 400;
-}
-
-.search-wrap {
-  padding: 0 12px 12px;
-}
-.search-input {
-  width: 100%;
-  background: var(--surface);
-  border: 1.5px solid var(--border);
-  border-radius: 50px;
-  padding: 9px 16px;
-  font-size: 0.875rem;
-  color: var(--text-primary);
-  outline: none;
-  font-family: inherit;
-}
+#sidebar { width: var(--sidebar-w); background: var(--surface2); border-right: 1.5px solid var(--border); display: flex; flex-direction: column; overflow: hidden; flex-shrink: 0; }
+.sidebar-header { padding: 20px 16px 12px; display: flex; align-items: center; gap: 10px; }
+.sidebar-logo { width: 36px; height: 36px; background: linear-gradient(135deg, #FF8C69, #FFB347); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+.sidebar-title { font-family: 'Gowun Dodum', serif; font-size: 1.2rem; color: var(--text-primary); font-weight: 400; }
+.search-wrap { padding: 0 12px 12px; }
+.search-input { width: 100%; background: var(--surface); border: 1.5px solid var(--border); border-radius: 50px; padding: 9px 16px; font-size: 0.875rem; color: var(--text-primary); outline: none; font-family: inherit; }
 .search-input::placeholder { color: var(--text-muted); }
 .search-input:focus { border-color: var(--accent1); }
-
 .folder-section { padding: 0 8px 8px; }
-.section-label {
-  font-size: 0.7rem; font-weight: 600;
-  color: var(--text-muted);
-  letter-spacing: 0.08em;
-  padding: 4px 8px 6px;
-  text-transform: uppercase;
-}
-.folder-item {
-  display: flex; align-items: center; gap: 8px;
-  padding: 9px 10px;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  font-size: 0.875rem;
-  color: var(--text-secondary);
-  transition: background 0.1s;
-  position: relative;
-}
+.section-label { font-size: 0.7rem; font-weight: 600; color: var(--text-muted); letter-spacing: 0.08em; padding: 4px 8px 6px; text-transform: uppercase; }
+.folder-item { display: flex; align-items: center; gap: 8px; padding: 9px 10px; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.875rem; color: var(--text-secondary); transition: background 0.1s; }
 .folder-item:hover { background: var(--surface3); }
-.folder-item.active {
-  background: var(--surface3);
-  color: var(--text-primary);
-  font-weight: 500;
-}
+.folder-item.active { background: var(--surface3); color: var(--text-primary); font-weight: 500; }
 .folder-item .folder-icon { font-size: 1rem; width: 20px; text-align: center; }
-.folder-item .folder-count {
-  margin-left: auto;
-  font-size: 0.75rem;
-  background: var(--surface3);
-  color: var(--text-muted);
-  padding: 1px 7px;
-  border-radius: 10px;
-}
-.folder-item.active .folder-count {
-  background: var(--accent1);
-  color: white;
-}
-.add-folder-btn {
-  display: flex; align-items: center; gap: 6px;
-  padding: 8px 10px;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  font-size: 0.825rem;
-  color: var(--text-muted);
-  border: none; background: none;
-  font-family: inherit;
-  width: 100%;
-  transition: color 0.1s;
-}
+.folder-item .folder-count { margin-left: auto; font-size: 0.75rem; background: var(--surface3); color: var(--text-muted); padding: 1px 7px; border-radius: 10px; }
+.folder-item.active .folder-count { background: var(--accent1); color: white; }
+.add-folder-btn { display: flex; align-items: center; gap: 6px; padding: 8px 10px; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.825rem; color: var(--text-muted); border: none; background: none; font-family: inherit; width: 100%; transition: color 0.1s; }
 .add-folder-btn:hover { color: var(--accent1); }
-
-.sidebar-bottom {
-  margin-top: auto;
-  padding: 12px;
-  border-top: 1px solid var(--border);
-}
-.user-row {
-  display: flex; align-items: center; gap: 10px;
-  padding: 8px;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-}
-.user-avatar {
-  width: 32px; height: 32px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--accent5), var(--accent3));
-  display: flex; align-items: center; justify-content: center;
-  font-size: 0.8rem; font-weight: 600; color: white;
-  overflow: hidden; flex-shrink: 0;
-}
+.sidebar-bottom { margin-top: auto; padding: 12px; border-top: 1px solid var(--border); }
+.user-row { display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: var(--radius-sm); }
+.user-avatar { width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, var(--accent5), var(--accent3)); display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 600; color: white; overflow: hidden; flex-shrink: 0; }
 .user-avatar img { width: 100%; height: 100%; object-fit: cover; }
 .user-name { font-size: 0.825rem; color: var(--text-secondary); flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.logout-btn {
-  font-size: 0.75rem; color: var(--text-muted);
-  background: none; border: none;
-  cursor: pointer; font-family: inherit;
-  padding: 4px 8px;
-  border-radius: 6px;
-  transition: color 0.1s;
-}
+.logout-btn { font-size: 0.75rem; color: var(--text-muted); background: none; border: none; cursor: pointer; font-family: inherit; padding: 4px 8px; border-radius: 6px; transition: color 0.1s; }
 .logout-btn:hover { color: var(--accent1); }
-
-/* ── Note List ── */
-#note-list-panel {
-  width: var(--notelist-w);
-  background: var(--surface);
-  border-right: 1.5px solid var(--border);
-  display: flex; flex-direction: column;
-  overflow: hidden;
-  flex-shrink: 0;
-}
-.notelist-header {
-  padding: 16px 16px 12px;
-  border-bottom: 1px solid var(--border);
-  display: flex; align-items: center; gap: 8px;
-}
-.notelist-title {
-  font-size: 1.05rem; font-weight: 600;
-  flex: 1; color: var(--text-primary);
-}
-.icon-btn {
-  width: 34px; height: 34px;
-  border-radius: 10px;
-  border: 1.5px solid var(--border);
-  background: var(--surface);
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer; font-size: 1rem;
-  transition: background 0.1s, border-color 0.1s;
-  color: var(--text-secondary);
-  flex-shrink: 0;
-}
-.icon-btn:hover { background: var(--surface2); border-color: var(--border2); }
-.icon-btn.primary {
-  background: var(--accent1);
-  border-color: var(--accent1);
-  color: white;
-}
+#note-list-panel { width: var(--notelist-w); background: var(--surface); border-right: 1.5px solid var(--border); display: flex; flex-direction: column; overflow: hidden; flex-shrink: 0; }
+.notelist-header { padding: 16px 16px 12px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; }
+.notelist-title { font-size: 1.05rem; font-weight: 600; flex: 1; color: var(--text-primary); }
+.icon-btn { width: 34px; height: 34px; border-radius: 10px; border: 1.5px solid var(--border); background: var(--surface); display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1rem; transition: background 0.1s; color: var(--text-secondary); flex-shrink: 0; }
+.icon-btn:hover { background: var(--surface2); }
+.icon-btn.primary { background: var(--accent1); border-color: var(--accent1); color: white; }
 .icon-btn.primary:hover { background: #e87a5a; }
-
 .note-list { flex: 1; overflow-y: auto; padding: 8px; }
 .note-list::-webkit-scrollbar { width: 4px; }
 .note-list::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 4px; }
-
-.note-card {
-  padding: 12px 14px;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  margin-bottom: 4px;
-  border: 1.5px solid transparent;
-  transition: background 0.1s, border-color 0.1s;
-  position: relative;
-}
+.note-card { padding: 12px 14px; border-radius: var(--radius-sm); cursor: pointer; margin-bottom: 4px; border: 1.5px solid transparent; transition: background 0.1s; }
 .note-card:hover { background: var(--surface2); }
-.note-card.active {
-  background: var(--surface2);
-  border-color: var(--border2);
-}
+.note-card.active { background: var(--surface2); border-color: var(--border2); }
 .note-card-header { display: flex; align-items: flex-start; gap: 6px; margin-bottom: 4px; }
 .note-card-icon { font-size: 0.9rem; margin-top: 1px; flex-shrink: 0; }
 .note-card-title { font-size: 0.9rem; font-weight: 500; color: var(--text-primary); line-height: 1.3; flex: 1; }
-.note-card-preview {
-  font-size: 0.78rem; color: var(--text-muted);
-  line-height: 1.4;
-  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
-  margin-bottom: 6px;
-}
+.note-card-preview { font-size: 0.78rem; color: var(--text-muted); line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 6px; }
 .note-card-meta { display: flex; align-items: center; gap: 6px; }
 .note-card-date { font-size: 0.72rem; color: var(--text-muted); }
-.note-type-badge {
-  font-size: 0.65rem; padding: 1px 7px;
-  border-radius: 10px; font-weight: 500;
-}
+.note-type-badge { font-size: 0.65rem; padding: 1px 7px; border-radius: 10px; font-weight: 500; }
 .badge-text { background: #FFF0E8; color: #CC7A5A; }
 .badge-canvas { background: #E8F5E0; color: #5A9A4A; }
 .badge-pdf { background: #FFE8E8; color: #CC5A5A; }
 .badge-image { background: #E8F0FF; color: #5A7ACC; }
-
-.empty-state {
-  text-align: center; padding: 3rem 1rem;
-  color: var(--text-muted);
-}
+.empty-state { text-align: center; padding: 3rem 1rem; color: var(--text-muted); }
 .empty-state .empty-icon { font-size: 3rem; margin-bottom: 1rem; }
 .empty-state p { font-size: 0.875rem; line-height: 1.6; }
-
-/* ── Editor Area ── */
-#editor-area {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  background: var(--surface);
-  min-width: 0;
-}
-
-#no-note-selected {
-  flex: 1; display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  gap: 1rem; color: var(--text-muted);
-  padding: 2rem;
-  text-align: center;
-}
+#editor-area { flex: 1; display: flex; flex-direction: column; overflow: hidden; background: var(--surface); min-width: 0; }
+#no-note-selected { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1rem; color: var(--text-muted); padding: 2rem; text-align: center; }
 .no-note-icon { font-size: 4rem; opacity: 0.5; }
 .no-note-title { font-size: 1.1rem; color: var(--text-secondary); }
 .no-note-sub { font-size: 0.875rem; line-height: 1.6; }
-.new-note-cta {
-  display: flex; align-items: center; gap: 8px;
-  background: var(--accent1);
-  color: white; border: none;
-  padding: 12px 24px; border-radius: 50px;
-  font-size: 0.9rem; font-weight: 500;
-  cursor: pointer; font-family: inherit;
-  margin-top: 0.5rem;
-  box-shadow: 0 4px 14px rgba(255,140,105,0.35);
-  transition: transform 0.1s;
-}
+.new-note-cta { display: flex; align-items: center; gap: 8px; background: var(--accent1); color: white; border: none; padding: 12px 24px; border-radius: 50px; font-size: 0.9rem; font-weight: 500; cursor: pointer; font-family: inherit; margin-top: 0.5rem; box-shadow: 0 4px 14px rgba(255,140,105,0.35); transition: transform 0.1s; }
 .new-note-cta:active { transform: scale(0.97); }
-
-/* ── Editor Toolbar ── */
-#editor-toolbar {
-  height: var(--toolbar-h);
-  border-bottom: 1px solid var(--border);
-  display: flex; align-items: center;
-  padding: 0 12px;
-  gap: 4px;
-  background: var(--surface);
-  overflow-x: auto;
-  flex-shrink: 0;
-}
+#editor-toolbar { height: var(--toolbar-h); border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 12px; gap: 4px; background: var(--surface); overflow-x: auto; flex-shrink: 0; }
 #editor-toolbar::-webkit-scrollbar { display: none; }
-
-.toolbar-group {
-  display: flex; align-items: center; gap: 2px;
-  padding: 0 6px;
-}
-.toolbar-group + .toolbar-group {
-  border-left: 1px solid var(--border);
-}
-
-.tb-btn {
-  width: 32px; height: 32px;
-  border-radius: 8px;
-  border: none; background: none;
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer; font-size: 0.9rem;
-  color: var(--text-secondary);
-  transition: background 0.1s, color 0.1s;
-  font-family: inherit;
-  flex-shrink: 0;
-}
+.toolbar-group { display: flex; align-items: center; gap: 2px; padding: 0 6px; }
+.toolbar-group + .toolbar-group { border-left: 1px solid var(--border); }
+.tb-btn { width: 32px; height: 32px; border-radius: 8px; border: none; background: none; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.9rem; color: var(--text-secondary); transition: background 0.1s; font-family: inherit; flex-shrink: 0; }
 .tb-btn:hover { background: var(--surface2); color: var(--text-primary); }
 .tb-btn.active { background: var(--surface3); color: var(--accent1); }
 .tb-btn.bold-btn { font-weight: 700; font-size: 1rem; }
 .tb-btn.italic-btn { font-style: italic; font-size: 1rem; }
-
-.toolbar-title-wrap {
-  flex: 1; display: flex; align-items: center;
-  padding: 0 8px; min-width: 0;
-}
-#note-title-input {
-  font-size: 1rem; font-weight: 600;
-  border: none; outline: none;
-  background: none; color: var(--text-primary);
-  font-family: inherit;
-  width: 100%;
-}
-
+.toolbar-title-wrap { flex: 1; display: flex; align-items: center; padding: 0 8px; min-width: 0; }
+#note-title-input { font-size: 1rem; font-weight: 600; border: none; outline: none; background: none; color: var(--text-primary); font-family: inherit; width: 100%; }
 .color-picker-wrap { position: relative; }
-.color-btn {
-  width: 22px; height: 22px;
-  border-radius: 50%;
-  border: 2px solid var(--border2);
-  cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  transition: transform 0.1s;
-}
+.color-btn { width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--border2); cursor: pointer; transition: transform 0.1s; }
 .color-btn:hover { transform: scale(1.15); }
-.color-dropdown {
-  position: absolute; top: 40px; left: 50%;
-  transform: translateX(-50%);
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 10px;
-  display: none;
-  z-index: 100;
-  box-shadow: 0 8px 24px var(--shadow);
-}
+.color-dropdown { position: absolute; top: 40px; left: 50%; transform: translateX(-50%); background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 10px; display: none; z-index: 100; box-shadow: 0 8px 24px var(--shadow); }
 .color-dropdown.show { display: flex; gap: 6px; }
-.color-swatch {
-  width: 24px; height: 24px; border-radius: 50%;
-  cursor: pointer; border: 2px solid transparent;
-  transition: transform 0.1s, border-color 0.1s;
-}
+.color-swatch { width: 24px; height: 24px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: transform 0.1s; }
 .color-swatch:hover { transform: scale(1.2); border-color: var(--border2); }
-
-/* Font size select */
-.font-size-sel {
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 4px 6px;
-  font-size: 0.8rem;
-  color: var(--text-secondary);
-  background: var(--surface);
-  cursor: pointer; outline: none;
-  font-family: inherit;
-}
-
-/* ── Text Editor ── */
-#text-editor-wrap {
-  flex: 1; overflow-y: auto; padding: 24px 32px;
-  background: var(--surface);
-}
+.font-size-sel { border: 1px solid var(--border); border-radius: 8px; padding: 4px 6px; font-size: 0.8rem; color: var(--text-secondary); background: var(--surface); cursor: pointer; outline: none; font-family: inherit; }
+#text-editor-wrap { flex: 1; overflow-y: auto; padding: 24px 32px; background: var(--surface); display: flex; flex-direction: column; }
 #text-editor-wrap::-webkit-scrollbar { width: 6px; }
 #text-editor-wrap::-webkit-scrollbar-thumb { background: var(--border); border-radius: 6px; }
-
-#text-editor {
-  min-height: 100%;
-  outline: none;
-  font-size: 1rem;
-  line-height: 1.8;
-  color: var(--text-primary);
-  font-family: 'Noto Sans KR', sans-serif;
-  max-width: 800px;
-  margin: 0 auto;
-}
-#text-editor:empty::before {
-  content: attr(data-placeholder);
-  color: var(--text-muted);
-  pointer-events: none;
-}
+#text-editor { min-height: 100%; outline: none; font-size: 1rem; line-height: 1.8; color: var(--text-primary); font-family: 'Noto Sans KR', sans-serif; max-width: 800px; margin: 0 auto; }
+#text-editor:empty::before { content: attr(data-placeholder); color: var(--text-muted); pointer-events: none; }
 #text-editor h1 { font-size: 1.75rem; font-weight: 700; margin: 1rem 0 0.5rem; }
 #text-editor h2 { font-size: 1.35rem; font-weight: 600; margin: 0.8rem 0 0.4rem; }
 #text-editor h3 { font-size: 1.1rem; font-weight: 600; margin: 0.6rem 0 0.3rem; }
 #text-editor ul, #text-editor ol { padding-left: 1.5rem; margin: 0.5rem 0; }
 #text-editor li { margin: 0.2rem 0; }
-#text-editor blockquote {
-  border-left: 3px solid var(--accent2);
-  padding-left: 1rem; margin: 0.5rem 0;
-  color: var(--text-secondary); font-style: italic;
-}
+#text-editor blockquote { border-left: 3px solid var(--accent2); padding-left: 1rem; margin: 0.5rem 0; color: var(--text-secondary); font-style: italic; }
 #text-editor input[type="checkbox"] { margin-right: 6px; accent-color: var(--accent1); }
 #text-editor img { max-width: 100%; border-radius: 8px; margin: 4px 0; }
-
-/* ── Canvas Editor ── */
-#canvas-wrap {
-  flex: 1; position: relative; overflow: hidden;
-  display: none;
-  background: var(--surface);
-}
-#drawing-canvas {
-  position: absolute; top: 0; left: 0;
-  touch-action: none;
-  cursor: crosshair;
-}
-#bg-canvas {
-  position: absolute; top: 0; left: 0;
-  pointer-events: none;
-}
-
-.canvas-tools {
-  position: absolute; left: 16px; top: 16px;
-  display: flex; flex-direction: column; gap: 6px;
-  z-index: 10;
-}
-.canvas-tool-btn {
-  width: 40px; height: 40px;
-  border-radius: 12px;
-  background: var(--surface);
-  border: 1.5px solid var(--border);
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer; font-size: 1.1rem;
-  box-shadow: 0 2px 8px var(--shadow);
-  transition: background 0.1s, border-color 0.1s;
-  color: var(--text-secondary);
-}
-.canvas-tool-btn:hover { background: var(--surface2); }
-.canvas-tool-btn.active { background: var(--accent1); border-color: var(--accent1); color: white; }
-
-.stroke-panel {
-  position: absolute; left: 64px; top: 16px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 12px;
-  z-index: 10;
-  display: none;
-  flex-direction: column; gap: 10px;
-  box-shadow: 0 4px 16px var(--shadow);
-  min-width: 180px;
-}
-.stroke-panel.show { display: flex; }
-.stroke-row { display: flex; align-items: center; gap: 8px; }
-.stroke-label { font-size: 0.75rem; color: var(--text-muted); width: 50px; }
-#stroke-size { flex: 1; accent-color: var(--accent1); }
-.color-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 5px; }
-.stroke-color-swatch {
-  width: 24px; height: 24px; border-radius: 50%;
-  cursor: pointer; border: 2px solid transparent;
-  transition: transform 0.1s;
-}
-.stroke-color-swatch:hover { transform: scale(1.2); }
-.stroke-color-swatch.selected { border-color: var(--text-primary); transform: scale(1.1); }
-
-.canvas-bottom-bar {
-  position: absolute; bottom: 16px; right: 16px;
-  display: flex; gap: 8px; z-index: 10;
-}
-
-/* ── New Note Modal ── */
-.modal-overlay {
-  position: fixed; inset: 0;
-  background: rgba(61,43,31,0.25);
-  backdrop-filter: blur(4px);
-  z-index: 200;
-  display: none;
-  align-items: center; justify-content: center;
-  padding: 1rem;
-}
+#canvas-wrap { flex: 1; position: relative; overflow: hidden; display: none; background: #FAFAFA; }
+#drawing-canvas { position: absolute; top: 0; left: 0; touch-action: none; cursor: crosshair; }
+#bg-canvas { position: absolute; top: 0; left: 0; pointer-events: none; }
+.modal-overlay { position: fixed; inset: 0; background: rgba(61,43,31,0.25); backdrop-filter: blur(4px); z-index: 200; display: none; align-items: center; justify-content: center; padding: 1rem; }
 .modal-overlay.show { display: flex; }
-.modal {
-  background: var(--surface);
-  border-radius: var(--radius);
-  padding: 24px;
-  width: 100%; max-width: 420px;
-  box-shadow: 0 20px 60px rgba(61,43,31,0.2);
-}
+.modal { background: var(--surface); border-radius: var(--radius); padding: 24px; width: 100%; max-width: 420px; box-shadow: 0 20px 60px rgba(61,43,31,0.2); }
 .modal-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 16px; }
 .modal-field { margin-bottom: 14px; }
 .modal-label { font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 5px; display: block; }
-.modal-input {
-  width: 100%; padding: 10px 14px;
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius-sm);
-  font-size: 0.95rem; font-family: inherit;
-  color: var(--text-primary); background: var(--surface);
-  outline: none;
-}
+.modal-input { width: 100%; padding: 10px 14px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-size: 0.95rem; font-family: inherit; color: var(--text-primary); background: var(--surface); outline: none; }
 .modal-input:focus { border-color: var(--accent1); }
-.note-type-grid {
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
-.note-type-option {
-  padding: 14px 12px;
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius-sm);
-  cursor: pointer; text-align: center;
-  transition: border-color 0.1s, background 0.1s;
-}
+.note-type-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.note-type-option { padding: 14px 12px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); cursor: pointer; text-align: center; transition: border-color 0.1s, background 0.1s; }
 .note-type-option:hover { background: var(--surface2); }
-.note-type-option.selected {
-  border-color: var(--accent1);
-  background: #FFF5EF;
-}
+.note-type-option.selected { border-color: var(--accent1); background: #FFF5EF; }
 .note-type-icon { font-size: 1.5rem; margin-bottom: 4px; }
 .note-type-name { font-size: 0.8rem; font-weight: 500; color: var(--text-secondary); }
 .modal-actions { display: flex; gap: 10px; margin-top: 18px; }
-.btn-cancel {
-  flex: 1; padding: 11px;
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius-sm);
-  background: none; font-family: inherit;
-  font-size: 0.9rem; cursor: pointer;
-  color: var(--text-secondary);
-}
-.btn-create {
-  flex: 2; padding: 11px;
-  border: none; border-radius: var(--radius-sm);
-  background: var(--accent1); color: white;
-  font-family: inherit; font-size: 0.9rem;
-  font-weight: 500; cursor: pointer;
-  box-shadow: 0 4px 12px rgba(255,140,105,0.3);
-}
+.btn-cancel { flex: 1; padding: 11px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); background: none; font-family: inherit; font-size: 0.9rem; cursor: pointer; color: var(--text-secondary); }
+.btn-create { flex: 2; padding: 11px; border: none; border-radius: var(--radius-sm); background: var(--accent1); color: white; font-family: inherit; font-size: 0.9rem; font-weight: 500; cursor: pointer; }
 .btn-create:hover { background: #e87a5a; }
-
-/* ── Folder Modal ── */
 .folder-color-grid { display: flex; gap: 8px; flex-wrap: wrap; }
-.folder-color-opt {
-  width: 30px; height: 30px; border-radius: 50%;
-  cursor: pointer; border: 3px solid transparent;
-  transition: transform 0.1s;
-}
+.folder-color-opt { width: 30px; height: 30px; border-radius: 50%; cursor: pointer; border: 3px solid transparent; transition: transform 0.1s; }
 .folder-color-opt:hover { transform: scale(1.15); }
 .folder-color-opt.selected { border-color: var(--text-primary); }
-
-/* ── Toast ── */
-#toast {
-  position: fixed; bottom: 24px; left: 50%;
-  transform: translateX(-50%) translateY(80px);
-  background: var(--text-primary); color: var(--bg);
-  padding: 10px 20px; border-radius: 50px;
-  font-size: 0.875rem;
-  transition: transform 0.3s;
-  z-index: 999; white-space: nowrap;
-}
+#toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px); background: var(--text-primary); color: var(--bg); padding: 10px 20px; border-radius: 50px; font-size: 0.875rem; transition: transform 0.3s; z-index: 999; white-space: nowrap; }
 #toast.show { transform: translateX(-50%) translateY(0); }
-
-/* ── Loading ── */
-#loading-overlay {
-  position: fixed; inset: 0;
-  background: var(--bg);
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  z-index: 500; gap: 1rem;
-}
-.loading-spinner {
-  width: 40px; height: 40px;
-  border: 3px solid var(--border);
-  border-top-color: var(--accent1);
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-}
+#loading-overlay { position: fixed; inset: 0; background: var(--bg); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 500; gap: 1rem; }
+.loading-spinner { width: 40px; height: 40px; border: 3px solid var(--border); border-top-color: var(--accent1); border-radius: 50%; animation: spin 0.8s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
-
-/* ── Responsive ── */
 @media (max-width: 768px) {
   #sidebar { display: none; }
   #note-list-panel { width: 100%; }
@@ -641,47 +160,20 @@ body {
   #editor-area.mobile-show { display: flex; position: fixed; inset: 0; z-index: 50; }
   .back-btn { display: flex !important; }
 }
-
-.back-btn {
-  display: none;
-  align-items: center; gap: 6px;
-  background: none; border: none;
-  color: var(--text-secondary);
-  font-size: 0.9rem; cursor: pointer;
-  font-family: inherit; padding: 6px 8px;
-  border-radius: 8px;
-}
-
-/* ── Checklist ── */
+.back-btn { display: none; align-items: center; gap: 6px; background: none; border: none; color: var(--text-secondary); font-size: 0.9rem; cursor: pointer; font-family: inherit; padding: 6px 8px; border-radius: 8px; }
 .check-item { display: flex; align-items: flex-start; gap: 8px; margin: 3px 0; }
 .check-item input { margin-top: 3px; }
 .check-item.done span { text-decoration: line-through; color: var(--text-muted); }
-
-/* ── File viewer toolbar ── */
-.file-viewer-toolbar {
-  display: flex; align-items: center; gap: 8px;
-  padding: 8px 12px;
-  border-bottom: 1px solid var(--border);
-  background: var(--surface);
-  flex-shrink: 0;
-}
-.file-info { font-size: 0.8rem; color: var(--text-secondary); flex: 1; }
-.page-nav { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--text-secondary); }
-
-/* scroll on text editor area fix */
-#text-editor-wrap { display: flex; flex-direction: column; }
 </style>
 </head>
 <body>
 
-<!-- Loading -->
 <div id="loading-overlay">
   <div style="font-size:3rem">📝</div>
   <div class="loading-spinner"></div>
   <p style="color:var(--text-muted);font-size:0.875rem">불러오는 중...</p>
 </div>
 
-<!-- Login Screen -->
 <div id="login-screen" style="display:none">
   <div class="logo-wrap">
     <div class="logo-icon">📝</div>
@@ -694,10 +186,7 @@ body {
   </button>
 </div>
 
-<!-- App -->
 <div id="app" style="display:none">
-
-  <!-- Sidebar -->
   <div id="sidebar">
     <div class="sidebar-header">
       <div class="sidebar-logo">📝</div>
@@ -710,19 +199,13 @@ body {
       <div class="section-label">폴더</div>
       <div id="folder-list">
         <div class="folder-item active" onclick="selectFolder('all')" data-folder="all">
-          <span class="folder-icon">📋</span>
-          <span>전체 노트</span>
-          <span class="folder-count" id="count-all">0</span>
+          <span class="folder-icon">📋</span><span>전체 노트</span><span class="folder-count" id="count-all">0</span>
         </div>
         <div class="folder-item" onclick="selectFolder('starred')" data-folder="starred">
-          <span class="folder-icon">⭐</span>
-          <span>즐겨찾기</span>
-          <span class="folder-count" id="count-starred">0</span>
+          <span class="folder-icon">⭐</span><span>즐겨찾기</span><span class="folder-count" id="count-starred">0</span>
         </div>
       </div>
-      <button class="add-folder-btn" onclick="showFolderModal()">
-        <span>＋</span> 새 폴더 추가
-      </button>
+      <button class="add-folder-btn" onclick="showFolderModal()"><span>＋</span> 새 폴더 추가</button>
     </div>
     <div class="sidebar-bottom">
       <div class="user-row">
@@ -733,25 +216,18 @@ body {
     </div>
   </div>
 
-  <!-- Note List -->
   <div id="note-list-panel">
     <div class="notelist-header">
-      <button class="back-btn" id="back-btn" onclick="goBackToList()" style="display:none">
-        ← 뒤로
-      </button>
+      <button class="back-btn" onclick="goBackToList()" style="display:none">← 뒤로</button>
       <span class="notelist-title" id="folder-title">전체 노트</span>
       <button class="icon-btn" onclick="sortNotes()" title="정렬">⇅</button>
       <button class="icon-btn primary" onclick="showNewNoteModal()" title="새 노트">＋</button>
     </div>
     <div class="note-list" id="note-list">
-      <div class="empty-state">
-        <div class="empty-icon">🌸</div>
-        <p>아직 노트가 없어요<br>새 노트를 만들어보세요!</p>
-      </div>
+      <div class="empty-state"><div class="empty-icon">🌸</div><p>아직 노트가 없어요<br>새 노트를 만들어보세요!</p></div>
     </div>
   </div>
 
-  <!-- Editor Area -->
   <div id="editor-area">
     <div id="no-note-selected">
       <div class="no-note-icon">🌿</div>
@@ -760,7 +236,6 @@ body {
       <button class="new-note-cta" onclick="showNewNoteModal()">✦ 새 노트 만들기</button>
     </div>
 
-    <!-- Text Editor Toolbar -->
     <div id="editor-toolbar" style="display:none">
       <div class="toolbar-group">
         <button class="tb-btn back-btn" onclick="goBackToList()" style="display:none">←</button>
@@ -769,15 +244,13 @@ body {
         </div>
       </div>
       <div class="toolbar-group" id="text-format-tools">
-        <button class="tb-btn bold-btn" onclick="execCmd('bold')" title="굵게">B</button>
-        <button class="tb-btn italic-btn" onclick="execCmd('italic')" title="기울임">I</button>
-        <button class="tb-btn" onclick="execCmd('underline')" title="밑줄" style="text-decoration:underline">U</button>
-        <button class="tb-btn" onclick="execCmd('strikeThrough')" title="취소선" style="text-decoration:line-through">S</button>
+        <button class="tb-btn bold-btn" onclick="execCmd('bold')">B</button>
+        <button class="tb-btn italic-btn" onclick="execCmd('italic')">I</button>
+        <button class="tb-btn" onclick="execCmd('underline')" style="text-decoration:underline">U</button>
+        <button class="tb-btn" onclick="execCmd('strikeThrough')" style="text-decoration:line-through">S</button>
         <select class="font-size-sel" onchange="execFontSize(this.value)">
-          <option value="3" selected>보통</option>
-          <option value="1">작게</option>
-          <option value="4">크게</option>
-          <option value="6">매우 크게</option>
+          <option value="3" selected>보통</option><option value="1">작게</option>
+          <option value="4">크게</option><option value="6">매우 크게</option>
         </select>
         <div class="color-picker-wrap">
           <div class="color-btn" id="current-color" style="background:#FF8C69" onclick="toggleColorDropdown()"></div>
@@ -794,41 +267,37 @@ body {
         </div>
       </div>
       <div class="toolbar-group" id="text-block-tools">
-        <button class="tb-btn" onclick="execCmd('insertUnorderedList')" title="목록">≡</button>
-        <button class="tb-btn" onclick="execCmd('insertOrderedList')" title="번호목록">①</button>
-        <button class="tb-btn" onclick="insertChecklist()" title="체크리스트">☑</button>
-        <button class="tb-btn" onclick="execCmd('formatBlock','<blockquote>')" title="인용">❝</button>
-        <button class="tb-btn" onclick="insertDivider()" title="구분선">—</button>
+        <button class="tb-btn" onclick="execCmd('insertUnorderedList')">≡</button>
+        <button class="tb-btn" onclick="execCmd('insertOrderedList')">①</button>
+        <button class="tb-btn" onclick="insertChecklist()">☑</button>
+        <button class="tb-btn" onclick="execCmd('formatBlock','<blockquote>')">❝</button>
+        <button class="tb-btn" onclick="insertDivider()">—</button>
       </div>
       <div class="toolbar-group">
-        <button class="tb-btn" onclick="insertImage()" title="이미지 삽입">🖼</button>
-        <button class="tb-btn" id="star-btn" onclick="toggleStar()" title="즐겨찾기">☆</button>
-        <button class="tb-btn" onclick="deleteCurrentNote()" title="삭제">🗑</button>
+        <button class="tb-btn" onclick="insertImage()">🖼</button>
+        <button class="tb-btn" id="star-btn" onclick="toggleStar()">☆</button>
+        <button class="tb-btn" onclick="deleteCurrentNote()">🗑</button>
       </div>
-      <!-- Canvas tools -->
       <div class="toolbar-group" id="canvas-toolbar" style="display:none">
-        <button class="tb-btn" onclick="setCanvasTool('pen')" id="tb-pen" title="펜">✏️</button>
-        <button class="tb-btn" onclick="setCanvasTool('highlighter')" id="tb-hl" title="형광펜">🖊</button>
-        <button class="tb-btn" onclick="setCanvasTool('eraser')" id="tb-er" title="지우개">⬜</button>
-        <button class="tb-btn" onclick="clearCanvas()" title="전체 지우기">🗑</button>
-        <input type="range" min="1" max="30" value="3" id="canvas-stroke-size" style="width:80px;accent-color:var(--accent1)" oninput="updateStrokeSize(this.value)">
-        <div style="display:flex;gap:4px" id="canvas-colors">
-          <div class="color-btn" style="background:#3D2B1F;width:22px;height:22px" onclick="setCanvasColor('#3D2B1F')"></div>
+        <button class="tb-btn active" onclick="setCanvasTool('pen')" id="tb-pen">✏️</button>
+        <button class="tb-btn" onclick="setCanvasTool('highlighter')" id="tb-hl">🖊</button>
+        <button class="tb-btn" onclick="setCanvasTool('eraser')" id="tb-er">⬜</button>
+        <button class="tb-btn" onclick="clearCanvas()">🗑</button>
+        <input type="range" min="1" max="20" value="3" id="canvas-stroke-size" style="width:70px;accent-color:var(--accent1)" oninput="updateStrokeSize(this.value)">
+        <div style="display:flex;gap:4px">
+          <div class="color-btn" style="background:#1A1A1A;width:22px;height:22px" onclick="setCanvasColor('#1A1A1A')"></div>
           <div class="color-btn" style="background:#FF8C69;width:22px;height:22px" onclick="setCanvasColor('#FF8C69')"></div>
           <div class="color-btn" style="background:#E24B4A;width:22px;height:22px" onclick="setCanvasColor('#E24B4A')"></div>
           <div class="color-btn" style="background:#5A9A4A;width:22px;height:22px" onclick="setCanvasColor('#5A9A4A')"></div>
           <div class="color-btn" style="background:#185FA5;width:22px;height:22px" onclick="setCanvasColor('#185FA5')"></div>
-          <div class="color-btn" style="background:#FFB347;width:22px;height:22px" onclick="setCanvasColor('#FFB347')"></div>
+          <div class="color-btn" style="background:#8B5CF6;width:22px;height:22px" onclick="setCanvasColor('#8B5CF6')"></div>
         </div>
       </div>
     </div>
 
-    <!-- Text Editor -->
     <div id="text-editor-wrap" style="display:none">
       <div id="text-editor" contenteditable="true" data-placeholder="여기에 내용을 입력하세요..."></div>
     </div>
-
-    <!-- Canvas Wrap -->
     <div id="canvas-wrap">
       <canvas id="bg-canvas"></canvas>
       <canvas id="drawing-canvas"></canvas>
@@ -836,59 +305,31 @@ body {
   </div>
 </div>
 
-<!-- New Note Modal -->
 <div class="modal-overlay" id="new-note-modal">
   <div class="modal">
     <div class="modal-title">새 노트 만들기</div>
-    <div class="modal-field">
-      <label class="modal-label">제목</label>
-      <input class="modal-input" id="new-note-title" placeholder="노트 제목을 입력하세요">
-    </div>
-    <div class="modal-field">
-      <label class="modal-label">폴더</label>
-      <select class="modal-input" id="new-note-folder">
-        <option value="">폴더 없음</option>
-      </select>
-    </div>
+    <div class="modal-field"><label class="modal-label">제목</label><input class="modal-input" id="new-note-title" placeholder="노트 제목을 입력하세요"></div>
+    <div class="modal-field"><label class="modal-label">폴더</label><select class="modal-input" id="new-note-folder"><option value="">폴더 없음</option></select></div>
     <div class="modal-field">
       <label class="modal-label">노트 종류</label>
       <div class="note-type-grid">
-        <div class="note-type-option selected" onclick="selectNoteType('text')" id="type-text">
-          <div class="note-type-icon">📝</div>
-          <div class="note-type-name">텍스트 노트</div>
-        </div>
-        <div class="note-type-option" onclick="selectNoteType('canvas')" id="type-canvas">
-          <div class="note-type-icon">✏️</div>
-          <div class="note-type-name">드로잉 노트</div>
-        </div>
-        <div class="note-type-option" onclick="selectNoteType('pdf')" id="type-pdf">
-          <div class="note-type-icon">📄</div>
-          <div class="note-type-name">PDF 필기</div>
-        </div>
-        <div class="note-type-option" onclick="selectNoteType('image')" id="type-image">
-          <div class="note-type-icon">🖼</div>
-          <div class="note-type-name">이미지 필기</div>
-        </div>
+        <div class="note-type-option selected" onclick="selectNoteType('text')" id="type-text"><div class="note-type-icon">📝</div><div class="note-type-name">텍스트 노트</div></div>
+        <div class="note-type-option" onclick="selectNoteType('canvas')" id="type-canvas"><div class="note-type-icon">✏️</div><div class="note-type-name">드로잉 노트</div></div>
+        <div class="note-type-option" onclick="selectNoteType('pdf')" id="type-pdf"><div class="note-type-icon">📄</div><div class="note-type-name">PDF 필기</div></div>
+        <div class="note-type-option" onclick="selectNoteType('image')" id="type-image"><div class="note-type-icon">🖼</div><div class="note-type-name">이미지 필기</div></div>
       </div>
     </div>
-    <div class="modal-actions">
-      <button class="btn-cancel" onclick="closeNewNoteModal()">취소</button>
-      <button class="btn-create" onclick="createNote()">만들기</button>
-    </div>
+    <div class="modal-actions"><button class="btn-cancel" onclick="closeNewNoteModal()">취소</button><button class="btn-create" onclick="createNote()">만들기</button></div>
   </div>
 </div>
 
-<!-- Folder Modal -->
 <div class="modal-overlay" id="folder-modal">
   <div class="modal">
     <div class="modal-title">새 폴더 만들기</div>
-    <div class="modal-field">
-      <label class="modal-label">폴더 이름</label>
-      <input class="modal-input" id="folder-name-input" placeholder="폴더 이름">
-    </div>
+    <div class="modal-field"><label class="modal-label">폴더 이름</label><input class="modal-input" id="folder-name-input" placeholder="폴더 이름"></div>
     <div class="modal-field">
       <label class="modal-label">색상</label>
-      <div class="folder-color-grid" id="folder-color-grid">
+      <div class="folder-color-grid">
         <div class="folder-color-opt selected" style="background:#FF8C69" data-color="#FF8C69" onclick="selectFolderColor(this)"></div>
         <div class="folder-color-opt" style="background:#FFB347" data-color="#FFB347" onclick="selectFolderColor(this)"></div>
         <div class="folder-color-opt" style="background:#87CEEB" data-color="#87CEEB" onclick="selectFolderColor(this)"></div>
@@ -897,62 +338,39 @@ body {
         <div class="folder-color-opt" style="background:#98B4D4" data-color="#98B4D4" onclick="selectFolderColor(this)"></div>
       </div>
     </div>
-    <div class="modal-actions">
-      <button class="btn-cancel" onclick="closeFolderModal()">취소</button>
-      <button class="btn-create" onclick="createFolder()">만들기</button>
-    </div>
+    <div class="modal-actions"><button class="btn-cancel" onclick="closeFolderModal()">취소</button><button class="btn-create" onclick="createFolder()">만들기</button></div>
   </div>
 </div>
 
-<!-- Toast -->
 <div id="toast"></div>
 
-<!-- Firebase -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
 import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut as fbSignOut } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
-import { getFirestore, collection, doc, addDoc, getDoc, getDocs, setDoc, deleteDoc, onSnapshot, query, where, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+import { getFirestore, collection, doc, addDoc, getDocs, setDoc, deleteDoc, query, where, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
-const firebaseConfig = {
+const app = initializeApp({
   apiKey: "AIzaSyAnRp3jSlY_1Cxea8MgWWiaxJ-glcsI7Vo",
   authDomain: "chachaping-3a287.firebaseapp.com",
   projectId: "chachaping-3a287",
   storageBucket: "chachaping-3a287.firebasestorage.app",
   messagingSenderId: "1091842771215",
   appId: "1:1091842771215:web:d6b808cae301333740967a"
-};
-
-const app = initializeApp(firebaseConfig);
+});
 const auth = getAuth(app);
 const db = getFirestore(app);
 const provider = new GoogleAuthProvider();
 
 window._db = db;
-window._auth = auth;
-window._collection = collection;
-window._doc = doc;
-window._addDoc = addDoc;
-window._getDoc = getDoc;
-window._getDocs = getDocs;
-window._setDoc = setDoc;
-window._deleteDoc = deleteDoc;
-window._onSnapshot = onSnapshot;
-window._query = query;
-window._where = where;
-window._orderBy = orderBy;
+window._collection = collection; window._doc = doc; window._addDoc = addDoc;
+window._getDocs = getDocs; window._setDoc = setDoc; window._deleteDoc = deleteDoc;
+window._query = query; window._where = where; window._orderBy = orderBy;
 window._serverTimestamp = serverTimestamp;
 
-window.signInWithGoogle = async () => {
-  try {
-    await signInWithPopup(auth, provider);
-  } catch(e) { console.error(e); showToast('로그인 실패'); }
-};
+window.signInWithGoogle = async () => { try { await signInWithPopup(auth, provider); } catch(e) { showToast('로그인 실패'); } };
+window.signOut = async () => { await fbSignOut(auth); };
 
-window.signOut = async () => {
-  await fbSignOut(auth);
-};
-
-onAuthStateChanged(auth, (user) => {
+onAuthStateChanged(auth, user => {
   document.getElementById('loading-overlay').style.display = 'none';
   if (user) {
     window._currentUser = user;
@@ -969,51 +387,31 @@ onAuthStateChanged(auth, (user) => {
 
 <script>
 // ── State ──
-let notes = [];
-let folders = [];
-let currentNote = null;
-let currentFolder = 'all';
-let selectedNoteType = 'text';
-let selectedFolderColor = '#FF8C69';
-let sortAsc = false;
-let searchQuery = '';
-let saveTimer = null;
+let notes = [], folders = [], currentNote = null, currentFolder = 'all';
+let selectedNoteType = 'text', selectedFolderColor = '#FF8C69';
+let sortAsc = false, searchQuery = '', saveTimer = null;
 
-// Canvas state
+// ── 부드러운 캔버스 상태 ──
 let isDrawing = false;
 let canvasTool = 'pen';
-let canvasColor = '#3D2B1F';
+let canvasColor = '#1A1A1A';
 let strokeSize = 3;
-let lastX = 0, lastY = 0;
-let canvasStrokes = [];
-let pdfDoc = null;
-let pdfPage = 1;
-let pdfTotalPages = 1;
-let bgImageData = null;
+let points = []; // 현재 획의 포인트 배열
+let lastTime = 0;
+let pdfDoc = null, pdfPage = 1, pdfTotalPages = 1;
 
-// ── Init ──
 async function initApp(user) {
-  // User info
-  const nameEl = document.getElementById('user-name-sidebar');
+  document.getElementById('user-name-sidebar').textContent = user.displayName || user.email;
   const avatarEl = document.getElementById('user-avatar-sidebar');
-  nameEl.textContent = user.displayName || user.email;
-  if (user.photoURL) {
-    avatarEl.innerHTML = `<img src="${user.photoURL}" alt="">`;
-  } else {
-    avatarEl.textContent = (user.displayName || user.email || '?')[0].toUpperCase();
-  }
-
-  // Load folders
+  if (user.photoURL) avatarEl.innerHTML = `<img src="${user.photoURL}" alt="">`;
+  else avatarEl.textContent = (user.displayName || user.email || '?')[0].toUpperCase();
   await loadFolders();
-  // Load notes
   await loadNotes();
 }
 
 async function loadFolders() {
   if (!window._currentUser) return;
-  const db = window._db;
-  const uid = window._currentUser.uid;
-  const q = window._query(window._collection(db, 'chacha_note_folders'), window._where('uid', '==', uid));
+  const q = window._query(window._collection(window._db, 'chacha_note_folders'), window._where('uid', '==', window._currentUser.uid));
   const snap = await window._getDocs(q);
   folders = snap.docs.map(d => ({ id: d.id, ...d.data() }));
   renderFolders();
@@ -1021,48 +419,32 @@ async function loadFolders() {
 
 async function loadNotes() {
   if (!window._currentUser) return;
-  const db = window._db;
-  const uid = window._currentUser.uid;
-  const q = window._query(window._collection(db, 'chacha_notes'), window._where('uid', '==', uid), window._orderBy('updatedAt', 'desc'));
+  const q = window._query(window._collection(window._db, 'chacha_notes'), window._where('uid', '==', window._currentUser.uid), window._orderBy('updatedAt', 'desc'));
   const snap = await window._getDocs(q);
   notes = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-  renderNoteList();
-  updateCounts();
+  renderNoteList(); updateCounts();
 }
 
-// ── Folders ──
 function renderFolders() {
   const list = document.getElementById('folder-list');
   const sel = document.getElementById('new-note-folder');
-  // Keep first two (all, starred)
-  const existingFixed = list.querySelectorAll('[data-folder="all"], [data-folder="starred"]');
-  const allFixed = Array.from(existingFixed);
-
-  // Remove custom folders
   list.querySelectorAll('.custom-folder').forEach(el => el.remove());
   sel.querySelectorAll('.custom-opt').forEach(el => el.remove());
-
   folders.forEach(f => {
     const div = document.createElement('div');
-    div.className = 'folder-item custom-folder';
-    div.dataset.folder = f.id;
+    div.className = 'folder-item custom-folder'; div.dataset.folder = f.id;
     div.onclick = () => selectFolder(f.id);
     div.innerHTML = `<span class="folder-icon" style="color:${f.color}">📁</span><span>${f.name}</span><span class="folder-count" id="count-${f.id}">0</span>`;
     list.appendChild(div);
-
     const opt = document.createElement('option');
-    opt.value = f.id;
-    opt.textContent = f.name;
-    opt.className = 'custom-opt';
+    opt.value = f.id; opt.textContent = f.name; opt.className = 'custom-opt';
     sel.appendChild(opt);
   });
 }
 
 function selectFolder(folderId) {
   currentFolder = folderId;
-  document.querySelectorAll('.folder-item').forEach(el => {
-    el.classList.toggle('active', el.dataset.folder === folderId);
-  });
+  document.querySelectorAll('.folder-item').forEach(el => el.classList.toggle('active', el.dataset.folder === folderId));
   const titles = { all: '전체 노트', starred: '즐겨찾기' };
   document.getElementById('folder-title').textContent = titles[folderId] || folders.find(f => f.id === folderId)?.name || '노트';
   renderNoteList();
@@ -1071,169 +453,85 @@ function selectFolder(folderId) {
 function updateCounts() {
   document.getElementById('count-all').textContent = notes.length;
   document.getElementById('count-starred').textContent = notes.filter(n => n.starred).length;
-  folders.forEach(f => {
-    const el = document.getElementById('count-' + f.id);
-    if (el) el.textContent = notes.filter(n => n.folderId === f.id).length;
-  });
+  folders.forEach(f => { const el = document.getElementById('count-' + f.id); if (el) el.textContent = notes.filter(n => n.folderId === f.id).length; });
 }
 
-// ── Note List ──
 function renderNoteList() {
-  let filtered = notes.filter(n => {
-    if (currentFolder === 'all') return true;
-    if (currentFolder === 'starred') return n.starred;
-    return n.folderId === currentFolder;
-  });
-
-  if (searchQuery) {
-    const q = searchQuery.toLowerCase();
-    filtered = filtered.filter(n => 
-      (n.title || '').toLowerCase().includes(q) || 
-      (n.textContent || '').toLowerCase().includes(q)
-    );
-  }
-
+  let filtered = notes.filter(n => currentFolder === 'all' ? true : currentFolder === 'starred' ? n.starred : n.folderId === currentFolder);
+  if (searchQuery) { const q = searchQuery.toLowerCase(); filtered = filtered.filter(n => (n.title||'').toLowerCase().includes(q) || (n.textContent||'').toLowerCase().includes(q)); }
   if (sortAsc) filtered.reverse();
-
   const list = document.getElementById('note-list');
-  if (filtered.length === 0) {
-    list.innerHTML = `<div class="empty-state"><div class="empty-icon">🌸</div><p>${searchQuery ? '검색 결과가 없어요' : '아직 노트가 없어요<br>새 노트를 만들어보세요!'}</p></div>`;
-    return;
-  }
-
+  if (!filtered.length) { list.innerHTML = `<div class="empty-state"><div class="empty-icon">🌸</div><p>${searchQuery ? '검색 결과가 없어요' : '아직 노트가 없어요<br>새 노트를 만들어보세요!'}</p></div>`; return; }
+  const icons = { text:'📝', canvas:'✏️', pdf:'📄', image:'🖼' };
+  const badges = { text:'badge-text', canvas:'badge-canvas', pdf:'badge-pdf', image:'badge-image' };
+  const names = { text:'텍스트', canvas:'드로잉', pdf:'PDF', image:'이미지' };
   list.innerHTML = filtered.map(n => {
-    const typeIcons = { text: '📝', canvas: '✏️', pdf: '📄', image: '🖼' };
-    const typeBadges = { text: 'badge-text', canvas: 'badge-canvas', pdf: 'badge-pdf', image: 'badge-image' };
-    const typeNames = { text: '텍스트', canvas: '드로잉', pdf: 'PDF', image: '이미지' };
     const date = n.updatedAt?.toDate ? n.updatedAt.toDate() : new Date();
-    const dateStr = date.toLocaleDateString('ko-KR', { month: 'short', day: 'numeric' });
-    return `
-      <div class="note-card ${currentNote?.id === n.id ? 'active' : ''}" onclick="openNote('${n.id}')">
-        <div class="note-card-header">
-          <span class="note-card-icon">${typeIcons[n.type] || '📝'}</span>
-          <span class="note-card-title">${n.title || '제목 없음'}</span>
-          ${n.starred ? '<span>⭐</span>' : ''}
-        </div>
-        <div class="note-card-preview">${n.textContent || '내용 없음'}</div>
-        <div class="note-card-meta">
-          <span class="note-card-date">${dateStr}</span>
-          <span class="note-type-badge ${typeBadges[n.type] || 'badge-text'}">${typeNames[n.type] || '텍스트'}</span>
-        </div>
-      </div>
-    `;
+    return `<div class="note-card ${currentNote?.id===n.id?'active':''}" onclick="openNote('${n.id}')">
+      <div class="note-card-header"><span class="note-card-icon">${icons[n.type]||'📝'}</span><span class="note-card-title">${n.title||'제목 없음'}</span>${n.starred?'<span>⭐</span>':''}</div>
+      <div class="note-card-preview">${n.textContent||'내용 없음'}</div>
+      <div class="note-card-meta"><span class="note-card-date">${date.toLocaleDateString('ko-KR',{month:'short',day:'numeric'})}</span><span class="note-type-badge ${badges[n.type]||'badge-text'}">${names[n.type]||'텍스트'}</span></div>
+    </div>`;
   }).join('');
 }
 
-function sortNotes() {
-  sortAsc = !sortAsc;
-  renderNoteList();
-}
+function sortNotes() { sortAsc = !sortAsc; renderNoteList(); }
+function searchNotes(q) { searchQuery = q; renderNoteList(); }
 
-function searchNotes(q) {
-  searchQuery = q;
-  renderNoteList();
-}
-
-// ── Open Note ──
 async function openNote(id) {
   const note = notes.find(n => n.id === id);
   if (!note) return;
-  currentNote = note;
-  renderNoteList();
-
+  currentNote = note; renderNoteList();
   document.getElementById('no-note-selected').style.display = 'none';
   document.getElementById('editor-toolbar').style.display = 'flex';
-
-  // Title
   document.getElementById('note-title-input').value = note.title || '';
   document.getElementById('star-btn').textContent = note.starred ? '⭐' : '☆';
-
-  // Mobile
-  const editorArea = document.getElementById('editor-area');
-  editorArea.classList.add('mobile-show');
-  const backBtns = document.querySelectorAll('.back-btn');
-  backBtns.forEach(b => b.style.display = 'flex');
-
+  document.getElementById('editor-area').classList.add('mobile-show');
+  document.querySelectorAll('.back-btn').forEach(b => b.style.display = 'flex');
   if (note.type === 'text') {
-    showTextEditor();
+    document.getElementById('text-editor-wrap').style.display = 'flex';
+    document.getElementById('canvas-wrap').style.display = 'none';
     document.getElementById('text-editor').innerHTML = note.content || '';
     document.getElementById('text-format-tools').style.display = 'flex';
     document.getElementById('text-block-tools').style.display = 'flex';
     document.getElementById('canvas-toolbar').style.display = 'none';
   } else {
-    showCanvasEditor();
+    document.getElementById('text-editor-wrap').style.display = 'none';
+    document.getElementById('canvas-wrap').style.display = 'block';
     document.getElementById('text-format-tools').style.display = 'none';
     document.getElementById('text-block-tools').style.display = 'none';
     document.getElementById('canvas-toolbar').style.display = 'flex';
-    await initCanvas(note);
+    setTimeout(() => initCanvas(note), 50);
   }
 }
 
-function showTextEditor() {
-  document.getElementById('text-editor-wrap').style.display = 'flex';
-  document.getElementById('canvas-wrap').style.display = 'none';
-}
+function goBackToList() { document.getElementById('editor-area').classList.remove('mobile-show'); currentNote = null; renderNoteList(); }
 
-function showCanvasEditor() {
-  document.getElementById('text-editor-wrap').style.display = 'none';
-  document.getElementById('canvas-wrap').style.display = 'block';
-  setTimeout(resizeCanvas, 50);
-}
-
-function goBackToList() {
-  document.getElementById('editor-area').classList.remove('mobile-show');
-  currentNote = null;
-  renderNoteList();
-}
-
-// ── Save ──
-function scheduleSave() {
-  if (saveTimer) clearTimeout(saveTimer);
-  saveTimer = setTimeout(saveCurrentNote, 1200);
-}
+function scheduleSave() { if (saveTimer) clearTimeout(saveTimer); saveTimer = setTimeout(saveCurrentNote, 1500); }
 
 async function saveCurrentNote() {
   if (!currentNote || !window._currentUser) return;
-  const db = window._db;
-  const uid = window._currentUser.uid;
-
-  let updateData = {
-    title: document.getElementById('note-title-input').value || '제목 없음',
-    updatedAt: window._serverTimestamp()
-  };
-
+  let updateData = { title: document.getElementById('note-title-input').value || '제목 없음', updatedAt: window._serverTimestamp() };
   if (currentNote.type === 'text') {
     const editor = document.getElementById('text-editor');
     updateData.content = editor.innerHTML;
     updateData.textContent = editor.innerText.substring(0, 200);
   } else {
-    const canvas = document.getElementById('drawing-canvas');
-    updateData.canvasData = canvas.toDataURL('image/png');
-    updateData.textContent = `${currentNote.type === 'pdf' ? 'PDF' : currentNote.type === 'image' ? '이미지' : '드로잉'} 노트`;
+    updateData.canvasData = document.getElementById('drawing-canvas').toDataURL('image/png');
+    updateData.textContent = `${currentNote.type==='pdf'?'PDF':currentNote.type==='image'?'이미지':'드로잉'} 노트`;
   }
-
   try {
-    await window._setDoc(window._doc(db, 'chacha_notes', currentNote.id), updateData, { merge: true });
+    await window._setDoc(window._doc(window._db, 'chacha_notes', currentNote.id), updateData, { merge: true });
     const idx = notes.findIndex(n => n.id === currentNote.id);
     if (idx !== -1) { notes[idx] = { ...notes[idx], ...updateData }; currentNote = notes[idx]; }
     renderNoteList();
   } catch(e) { showToast('저장 실패'); }
 }
 
-function onTitleChange(val) {
-  if (currentNote) currentNote.title = val;
-  scheduleSave();
-}
+function onTitleChange(val) { if (currentNote) currentNote.title = val; scheduleSave(); }
 
-// ── New Note ──
-function showNewNoteModal() {
-  document.getElementById('new-note-modal').classList.add('show');
-  document.getElementById('new-note-title').value = '';
-  document.getElementById('new-note-title').focus();
-}
-function closeNewNoteModal() {
-  document.getElementById('new-note-modal').classList.remove('show');
-}
+function showNewNoteModal() { document.getElementById('new-note-modal').classList.add('show'); document.getElementById('new-note-title').value = ''; document.getElementById('new-note-title').focus(); }
+function closeNewNoteModal() { document.getElementById('new-note-modal').classList.remove('show'); }
 function selectNoteType(type) {
   selectedNoteType = type;
   document.querySelectorAll('.note-type-option').forEach(el => el.classList.remove('selected'));
@@ -1244,54 +542,28 @@ async function createNote() {
   if (!window._currentUser) return;
   const title = document.getElementById('new-note-title').value || '새 노트';
   const folderId = document.getElementById('new-note-folder').value;
-
-  const noteData = {
-    uid: window._currentUser.uid,
-    title,
-    type: selectedNoteType,
-    content: '',
-    textContent: '',
-    folderId: folderId || null,
-    starred: false,
-    createdAt: window._serverTimestamp(),
-    updatedAt: window._serverTimestamp()
-  };
-
+  const noteData = { uid: window._currentUser.uid, title, type: selectedNoteType, content: '', textContent: '', folderId: folderId || null, starred: false, createdAt: window._serverTimestamp(), updatedAt: window._serverTimestamp() };
   try {
     const ref = await window._addDoc(window._collection(window._db, 'chacha_notes'), noteData);
-    const newNote = { id: ref.id, ...noteData };
-    notes.unshift(newNote);
-    closeNewNoteModal();
-    updateCounts();
-
-    if (selectedNoteType === 'pdf') {
-      await openNote(ref.id);
-      loadPdfFile();
-    } else if (selectedNoteType === 'image') {
-      await openNote(ref.id);
-      loadImageFile();
-    } else {
-      await openNote(ref.id);
-    }
+    notes.unshift({ id: ref.id, ...noteData });
+    closeNewNoteModal(); updateCounts();
+    await openNote(ref.id);
+    if (selectedNoteType === 'pdf') loadPdfFile();
+    else if (selectedNoteType === 'image') loadImageFile();
     showToast('노트를 만들었어요 ✨');
-  } catch(e) { console.error(e); showToast('노트 생성 실패'); }
+  } catch(e) { showToast('노트 생성 실패'); }
 }
 
-// ── Delete / Star ──
 async function deleteCurrentNote() {
-  if (!currentNote) return;
-  if (!confirm('정말 삭제할까요?')) return;
+  if (!currentNote || !confirm('정말 삭제할까요?')) return;
   try {
     await window._deleteDoc(window._doc(window._db, 'chacha_notes', currentNote.id));
-    notes = notes.filter(n => n.id !== currentNote.id);
-    currentNote = null;
+    notes = notes.filter(n => n.id !== currentNote.id); currentNote = null;
     document.getElementById('no-note-selected').style.display = 'flex';
     document.getElementById('editor-toolbar').style.display = 'none';
     document.getElementById('text-editor-wrap').style.display = 'none';
     document.getElementById('canvas-wrap').style.display = 'none';
-    renderNoteList();
-    updateCounts();
-    showToast('삭제했어요');
+    renderNoteList(); updateCounts(); showToast('삭제했어요');
   } catch(e) { showToast('삭제 실패'); }
 }
 
@@ -1305,136 +577,88 @@ async function toggleStar() {
   updateCounts();
 }
 
-// ── Text Editor Commands ──
-function execCmd(cmd, val) {
-  document.getElementById('text-editor').focus();
-  document.execCommand(cmd, false, val || null);
-  scheduleSave();
-}
-function execFontSize(val) {
-  document.getElementById('text-editor').focus();
-  document.execCommand('fontSize', false, val);
-  scheduleSave();
-}
+function execCmd(cmd, val) { document.getElementById('text-editor').focus(); document.execCommand(cmd, false, val || null); scheduleSave(); }
+function execFontSize(val) { document.getElementById('text-editor').focus(); document.execCommand('fontSize', false, val); scheduleSave(); }
 function setTextColor(color) {
   document.getElementById('current-color').style.background = color;
   document.getElementById('color-dropdown').classList.remove('show');
   document.getElementById('text-editor').focus();
-  document.execCommand('foreColor', false, color);
-  scheduleSave();
+  document.execCommand('foreColor', false, color); scheduleSave();
 }
-function toggleColorDropdown() {
-  document.getElementById('color-dropdown').classList.toggle('show');
-}
+function toggleColorDropdown() { document.getElementById('color-dropdown').classList.toggle('show'); }
 function insertChecklist() {
-  const editor = document.getElementById('text-editor');
-  editor.focus();
-  const div = document.createElement('div');
-  div.className = 'check-item';
+  const editor = document.getElementById('text-editor'); editor.focus();
+  const div = document.createElement('div'); div.className = 'check-item';
   div.innerHTML = '<input type="checkbox" onchange="this.parentElement.classList.toggle(\'done\',this.checked)"><span>할 일 입력...</span>';
   const sel = window.getSelection();
-  if (sel.rangeCount > 0) {
-    const range = sel.getRangeAt(0);
-    range.deleteContents();
-    range.insertNode(div);
-  } else {
-    editor.appendChild(div);
-  }
+  if (sel.rangeCount > 0) { const r = sel.getRangeAt(0); r.deleteContents(); r.insertNode(div); } else editor.appendChild(div);
   scheduleSave();
 }
-function insertDivider() {
-  document.getElementById('text-editor').focus();
-  document.execCommand('insertHorizontalRule', false, null);
-  scheduleSave();
-}
+function insertDivider() { document.getElementById('text-editor').focus(); document.execCommand('insertHorizontalRule', false, null); scheduleSave(); }
 function insertImage() {
-  const input = document.createElement('input');
-  input.type = 'file'; input.accept = 'image/*';
+  const input = document.createElement('input'); input.type = 'file'; input.accept = 'image/*';
   input.onchange = e => {
     const file = e.target.files[0]; if (!file) return;
     const reader = new FileReader();
-    reader.onload = ev => {
-      document.getElementById('text-editor').focus();
-      document.execCommand('insertImage', false, ev.target.result);
-      scheduleSave();
-    };
+    reader.onload = ev => { document.getElementById('text-editor').focus(); document.execCommand('insertImage', false, ev.target.result); scheduleSave(); };
     reader.readAsDataURL(file);
   };
   input.click();
 }
-
 document.getElementById('text-editor').addEventListener('input', scheduleSave);
-document.getElementById('text-editor').addEventListener('keydown', e => {
-  if (e.key === 'Enter' && !e.shiftKey) {
-    setTimeout(() => {
-      const sel = window.getSelection();
-      if (sel && sel.focusNode) {
-        const parent = sel.focusNode.parentElement;
-        if (parent && parent.className === 'check-item') {
-          // already in checklist
-        }
-      }
-    }, 0);
-  }
-});
-document.addEventListener('click', e => {
-  if (!e.target.closest('.color-picker-wrap')) {
-    document.getElementById('color-dropdown').classList.remove('show');
-  }
-});
+document.addEventListener('click', e => { if (!e.target.closest('.color-picker-wrap')) document.getElementById('color-dropdown').classList.remove('show'); });
 
-// ── Canvas ──
-async function initCanvas(note) {
-  const wrap = document.getElementById('canvas-wrap');
-  const bgCanvas = document.getElementById('bg-canvas');
+// ══════════════════════════════════════════════
+// ── 부드러운 캔버스 드로잉 (베지어 + 압력 + 속도) ──
+// ══════════════════════════════════════════════
+
+function initCanvas(note) {
   const drawCanvas = document.getElementById('drawing-canvas');
+  const bgCanvas = document.getElementById('bg-canvas');
+  const wrap = document.getElementById('canvas-wrap');
+  const w = wrap.offsetWidth, h = wrap.offsetHeight;
+  drawCanvas.width = w; drawCanvas.height = h;
+  bgCanvas.width = w; bgCanvas.height = h;
+  drawCanvas.style.width = w + 'px'; drawCanvas.style.height = h + 'px';
+  bgCanvas.style.width = w + 'px'; bgCanvas.style.height = h + 'px';
+
   const ctx = drawCanvas.getContext('2d');
-
-  resizeCanvas();
-
-  // Load existing drawing
   if (note.canvasData) {
     const img = new Image();
-    img.onload = () => {
-      ctx.drawImage(img, 0, 0, drawCanvas.width, drawCanvas.height);
-    };
+    img.onload = () => ctx.drawImage(img, 0, 0, drawCanvas.width, drawCanvas.height);
     img.src = note.canvasData;
-  } else {
-    ctx.clearRect(0, 0, drawCanvas.width, drawCanvas.height);
-  }
+  } else { ctx.clearRect(0, 0, drawCanvas.width, drawCanvas.height); }
 
-  // Load PDF/Image background
-  if (note.type === 'pdf' && note.bgData) {
-    loadBgFromData(note.bgData, 'pdf');
-  } else if (note.type === 'image' && note.bgData) {
-    loadBgFromData(note.bgData, 'image');
-  }
+  if (note.type === 'pdf' && note.bgData) loadBgFromData(note.bgData, 'pdf');
+  else if (note.type === 'image' && note.bgData) loadBgFromData(note.bgData, 'image');
 
-  setupCanvasEvents(drawCanvas);
+  drawCanvas.removeEventListener('pointerdown', onPointerDown);
+  drawCanvas.removeEventListener('pointermove', onPointerMove);
+  drawCanvas.removeEventListener('pointerup', onPointerUp);
+  drawCanvas.removeEventListener('pointerleave', onPointerUp);
+  drawCanvas.addEventListener('pointerdown', onPointerDown);
+  drawCanvas.addEventListener('pointermove', onPointerMove);
+  drawCanvas.addEventListener('pointerup', onPointerUp);
+  drawCanvas.addEventListener('pointerleave', onPointerUp);
 }
 
 function resizeCanvas() {
   const wrap = document.getElementById('canvas-wrap');
-  const bgCanvas = document.getElementById('bg-canvas');
   const drawCanvas = document.getElementById('drawing-canvas');
-  const w = wrap.offsetWidth; const h = wrap.offsetHeight;
-  bgCanvas.width = w; bgCanvas.height = h;
+  const bgCanvas = document.getElementById('bg-canvas');
+  const w = wrap.offsetWidth, h = wrap.offsetHeight;
+  // 기존 드로잉 보존
+  const tempCanvas = document.createElement('canvas');
+  tempCanvas.width = drawCanvas.width; tempCanvas.height = drawCanvas.height;
+  tempCanvas.getContext('2d').drawImage(drawCanvas, 0, 0);
   drawCanvas.width = w; drawCanvas.height = h;
-  bgCanvas.style.width = w + 'px'; bgCanvas.style.height = h + 'px';
+  bgCanvas.width = w; bgCanvas.height = h;
   drawCanvas.style.width = w + 'px'; drawCanvas.style.height = h + 'px';
+  bgCanvas.style.width = w + 'px'; bgCanvas.style.height = h + 'px';
+  drawCanvas.getContext('2d').drawImage(tempCanvas, 0, 0);
 }
 
-function setupCanvasEvents(canvas) {
-  canvas.removeEventListener('pointerdown', onPointerDown);  // 빠져있음
-  canvas.removeEventListener('pointermove', onPointerMove);
-  canvas.removeEventListener('pointerup', onPointerUp);      // 빠져있음
-  canvas.addEventListener('pointerdown', onPointerDown);     // 빠져있음
-  canvas.addEventListener('pointermove', onPointerMove);
-  canvas.addEventListener('pointerup', onPointerUp);         // 빠져있음
-  canvas.addEventListener('pointerleave', onPointerUp);      // 빠져있음
-}
-
-function getCanvasPos(e, canvas) {
+function getPos(e, canvas) {
   const rect = canvas.getBoundingClientRect();
   return { x: e.clientX - rect.left, y: e.clientY - rect.top };
 }
@@ -1443,8 +667,12 @@ function onPointerDown(e) {
   if (e.pointerType === 'touch') return;
   e.preventDefault();
   isDrawing = true;
-  const pos = getCanvasPos(e, this);
-  lastX = pos.x; lastY = pos.y;
+  points = [];
+  lastTime = Date.now();
+  const pos = getPos(e, document.getElementById('drawing-canvas'));
+  // 압력값 (Apple Pencil: 0~1, 없으면 0.5)
+  const pressure = e.pressure > 0 ? e.pressure : 0.5;
+  points.push({ x: pos.x, y: pos.y, pressure, time: lastTime });
 }
 
 function onPointerMove(e) {
@@ -1453,31 +681,98 @@ function onPointerMove(e) {
   e.preventDefault();
   const canvas = document.getElementById('drawing-canvas');
   const ctx = canvas.getContext('2d');
-  const pos = getCanvasPos(e, canvas);
+  const pos = getPos(e, canvas);
+  const now = Date.now();
+  const pressure = e.pressure > 0 ? e.pressure : 0.5;
+  points.push({ x: pos.x, y: pos.y, pressure, time: now });
 
   if (canvasTool === 'eraser') {
-    ctx.clearRect(pos.x - strokeSize * 3, pos.y - strokeSize * 3, strokeSize * 6, strokeSize * 6);
-  } else {
-    ctx.beginPath();
-    ctx.moveTo(lastX, lastY);
-    ctx.lineTo(pos.x, pos.y);
-    ctx.strokeStyle = canvasTool === 'highlighter' ? canvasColor + '60' : canvasColor;
-    ctx.lineWidth = canvasTool === 'highlighter' ? strokeSize * 4 : strokeSize;
-    ctx.lineCap = 'round';
-    ctx.lineJoin = 'round';
-    ctx.globalCompositeOperation = canvasTool === 'highlighter' ? 'multiply' : 'source-over';
-    ctx.stroke();
+    const eraserSize = strokeSize * 5;
+    ctx.clearRect(pos.x - eraserSize / 2, pos.y - eraserSize / 2, eraserSize, eraserSize);
+    lastTime = now;
+    return;
   }
 
-  lastX = pos.x; lastY = pos.y;
+  if (points.length < 2) return;
+
+  // 속도 계산 (픽셀/ms)
+  const prev = points[points.length - 2];
+  const curr = points[points.length - 1];
+  const dt = Math.max(curr.time - prev.time, 1);
+  const dx = curr.x - prev.x;
+  const dy = curr.y - prev.y;
+  const speed = Math.sqrt(dx * dx + dy * dy) / dt;
+
+  // 속도가 빠를수록 얇게, 느릴수록 굵게
+  // 압력이 강할수록 굵게
+  const speedFactor = Math.max(0.3, 1 - speed * 0.8);
+  const pressureFactor = canvasTool === 'highlighter' ? 1 : (0.4 + pressure * 0.6);
+  const lineWidth = strokeSize * speedFactor * pressureFactor;
+
+  ctx.save();
+  ctx.beginPath();
+
+  if (canvasTool === 'highlighter') {
+    ctx.globalAlpha = 0.35;
+    ctx.globalCompositeOperation = 'multiply';
+    ctx.strokeStyle = canvasColor;
+    ctx.lineWidth = strokeSize * 6;
+    ctx.lineCap = 'square';
+    ctx.lineJoin = 'round';
+    ctx.moveTo(prev.x, prev.y);
+    ctx.lineTo(curr.x, curr.y);
+  } else {
+    ctx.globalAlpha = Math.min(1, 0.7 + pressure * 0.3);
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.strokeStyle = canvasColor;
+    ctx.lineWidth = Math.max(0.5, lineWidth);
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+
+    // 베지어 곡선으로 부드럽게
+    if (points.length >= 3) {
+      const p0 = points[points.length - 3];
+      const p1 = points[points.length - 2];
+      const p2 = points[points.length - 1];
+      const cp1x = p0.x + (p1.x - p0.x) * 0.5;
+      const cp1y = p0.y + (p1.y - p0.y) * 0.5;
+      const cp2x = p1.x + (p2.x - p1.x) * 0.5;
+      const cp2y = p1.y + (p2.y - p1.y) * 0.5;
+      ctx.moveTo(cp1x, cp1y);
+      ctx.quadraticCurveTo(p1.x, p1.y, cp2x, cp2y);
+    } else {
+      ctx.moveTo(prev.x, prev.y);
+      ctx.lineTo(curr.x, curr.y);
+    }
+  }
+
+  ctx.stroke();
+  ctx.restore();
+  lastTime = now;
   scheduleSave();
 }
 
 function onPointerUp(e) {
   if (e.pointerType === 'touch') return;
+  if (!isDrawing) return;
   isDrawing = false;
-  const ctx = document.getElementById('drawing-canvas').getContext('2d');
-  ctx.globalCompositeOperation = 'source-over';
+
+  // 획 끝 마무리 - 점 하나만 찍었을 때 원형으로
+  if (points.length === 1) {
+    const canvas = document.getElementById('drawing-canvas');
+    const ctx = canvas.getContext('2d');
+    const p = points[0];
+    const pressure = p.pressure || 0.5;
+    ctx.save();
+    ctx.beginPath();
+    ctx.fillStyle = canvasColor;
+    ctx.globalAlpha = 0.8 + pressure * 0.2;
+    ctx.arc(p.x, p.y, strokeSize * pressure * 0.5, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+    scheduleSave();
+  }
+  points = [];
 }
 
 function setCanvasTool(tool) {
@@ -1485,16 +780,11 @@ function setCanvasTool(tool) {
   document.getElementById('tb-pen').classList.toggle('active', tool === 'pen');
   document.getElementById('tb-hl').classList.toggle('active', tool === 'highlighter');
   document.getElementById('tb-er').classList.toggle('active', tool === 'eraser');
+  const canvas = document.getElementById('drawing-canvas');
+  canvas.style.cursor = tool === 'eraser' ? 'cell' : 'crosshair';
 }
-
-function setCanvasColor(color) {
-  canvasColor = color;
-}
-
-function updateStrokeSize(val) {
-  strokeSize = parseInt(val);
-}
-
+function setCanvasColor(color) { canvasColor = color; }
+function updateStrokeSize(val) { strokeSize = parseInt(val); }
 function clearCanvas() {
   if (!confirm('캔버스를 모두 지울까요?')) return;
   const canvas = document.getElementById('drawing-canvas');
@@ -1502,28 +792,19 @@ function clearCanvas() {
   scheduleSave();
 }
 
-// ── PDF Load ──
 function loadPdfFile() {
-  const input = document.createElement('input');
-  input.type = 'file'; input.accept = 'application/pdf';
+  const input = document.createElement('input'); input.type = 'file'; input.accept = 'application/pdf';
   input.onchange = async e => {
     const file = e.target.files[0]; if (!file) return;
     showToast('PDF 불러오는 중...');
     const arrayBuffer = await file.arrayBuffer();
     const base64 = btoa(String.fromCharCode(...new Uint8Array(arrayBuffer)));
-    if (pdfjsLib) {
-      const loadingTask = pdfjsLib.getDocument({ data: arrayBuffer });
-      pdfDoc = await loadingTask.promise;
-      pdfTotalPages = pdfDoc.numPages;
-      pdfPage = 1;
+    if (typeof pdfjsLib !== 'undefined') {
+      pdfDoc = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+      pdfTotalPages = pdfDoc.numPages; pdfPage = 1;
       await renderPdfPage(pdfPage);
-      // Save bg data
       if (currentNote) {
-        await window._setDoc(window._doc(window._db, 'chacha_notes', currentNote.id), {
-          bgData: base64,
-          bgType: 'pdf',
-          pdfTotalPages
-        }, { merge: true });
+        await window._setDoc(window._doc(window._db, 'chacha_notes', currentNote.id), { bgData: base64, bgType: 'pdf', pdfTotalPages }, { merge: true });
         currentNote.bgData = base64;
       }
       showToast('PDF 불러왔어요 ✨');
@@ -1539,15 +820,12 @@ async function renderPdfPage(pageNum) {
   const wrap = document.getElementById('canvas-wrap');
   const viewport = page.getViewport({ scale: wrap.offsetWidth / page.getViewport({ scale: 1 }).width });
   bgCanvas.width = viewport.width; bgCanvas.height = viewport.height;
-  const ctx = bgCanvas.getContext('2d');
-  await page.render({ canvasContext: ctx, viewport }).promise;
+  await page.render({ canvasContext: bgCanvas.getContext('2d'), viewport }).promise;
   resizeCanvas();
 }
 
-// ── Image Load ──
 function loadImageFile() {
-  const input = document.createElement('input');
-  input.type = 'file'; input.accept = 'image/*';
+  const input = document.createElement('input'); input.type = 'file'; input.accept = 'image/*';
   input.onchange = e => {
     const file = e.target.files[0]; if (!file) return;
     const reader = new FileReader();
@@ -1557,19 +835,14 @@ function loadImageFile() {
       const img = new Image();
       img.onload = () => {
         const scale = Math.min(wrap.offsetWidth / img.width, wrap.offsetHeight / img.height, 1);
-        bgCanvas.width = img.width * scale;
-        bgCanvas.height = img.height * scale;
+        bgCanvas.width = img.width * scale; bgCanvas.height = img.height * scale;
         bgCanvas.getContext('2d').drawImage(img, 0, 0, bgCanvas.width, bgCanvas.height);
         resizeCanvas();
       };
       img.src = ev.target.result;
-      // Save
       if (currentNote) {
-        const base64 = ev.target.result.split(',')[1];
-        await window._setDoc(window._doc(window._db, 'chacha_notes', currentNote.id), {
-          bgData: base64, bgType: 'image'
-        }, { merge: true });
-        currentNote.bgData = base64;
+        await window._setDoc(window._doc(window._db, 'chacha_notes', currentNote.id), { bgData: ev.target.result.split(',')[1], bgType: 'image' }, { merge: true });
+        currentNote.bgData = ev.target.result.split(',')[1];
       }
       showToast('이미지 불러왔어요 ✨');
     };
@@ -1582,85 +855,38 @@ function loadBgFromData(base64, type) {
   if (type === 'image') {
     const bgCanvas = document.getElementById('bg-canvas');
     const img = new Image();
-    img.onload = () => {
-      bgCanvas.getContext('2d').drawImage(img, 0, 0, bgCanvas.width, bgCanvas.height);
-    };
+    img.onload = () => bgCanvas.getContext('2d').drawImage(img, 0, 0, bgCanvas.width, bgCanvas.height);
     img.src = 'data:image/png;base64,' + base64;
   } else if (type === 'pdf') {
     const arr = Uint8Array.from(atob(base64), c => c.charCodeAt(0));
-    pdfjsLib.getDocument({ data: arr }).promise.then(pdf => {
-      pdfDoc = pdf;
-      pdfTotalPages = pdf.numPages;
-      renderPdfPage(1);
-    });
+    pdfjsLib.getDocument({ data: arr }).promise.then(pdf => { pdfDoc = pdf; pdfTotalPages = pdf.numPages; renderPdfPage(1); });
   }
 }
 
-// ── Folder Modal ──
-function showFolderModal() {
-  document.getElementById('folder-modal').classList.add('show');
-  document.getElementById('folder-name-input').value = '';
-}
-function closeFolderModal() {
-  document.getElementById('folder-modal').classList.remove('show');
-}
-function selectFolderColor(el) {
-  document.querySelectorAll('.folder-color-opt').forEach(o => o.classList.remove('selected'));
-  el.classList.add('selected');
-  selectedFolderColor = el.dataset.color;
-}
-
+function showFolderModal() { document.getElementById('folder-modal').classList.add('show'); document.getElementById('folder-name-input').value = ''; }
+function closeFolderModal() { document.getElementById('folder-modal').classList.remove('show'); }
+function selectFolderColor(el) { document.querySelectorAll('.folder-color-opt').forEach(o => o.classList.remove('selected')); el.classList.add('selected'); selectedFolderColor = el.dataset.color; }
 async function createFolder() {
   const name = document.getElementById('folder-name-input').value.trim();
   if (!name) { showToast('폴더 이름을 입력해주세요'); return; }
   if (!window._currentUser) return;
-
   try {
-    const ref = await window._addDoc(window._collection(window._db, 'chacha_note_folders'), {
-      uid: window._currentUser.uid,
-      name, color: selectedFolderColor,
-      createdAt: window._serverTimestamp()
-    });
+    const ref = await window._addDoc(window._collection(window._db, 'chacha_note_folders'), { uid: window._currentUser.uid, name, color: selectedFolderColor, createdAt: window._serverTimestamp() });
     folders.push({ id: ref.id, name, color: selectedFolderColor });
-    renderFolders();
-    closeFolderModal();
-    showToast('폴더를 만들었어요 📁');
+    renderFolders(); closeFolderModal(); showToast('폴더를 만들었어요 📁');
   } catch(e) { showToast('폴더 생성 실패'); }
 }
 
-// ── PDF.js setup ──
-if (typeof pdfjsLib !== 'undefined') {
-  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-}
+if (typeof pdfjsLib !== 'undefined') pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
-// ── Toast ──
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2500);
-}
+function showToast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2500); }
 
-// ── Keyboard shortcuts ──
 document.addEventListener('keydown', e => {
-  if ((e.metaKey || e.ctrlKey) && e.key === 's') {
-    e.preventDefault();
-    saveCurrentNote().then(() => showToast('저장했어요 ✓'));
-  }
-  if ((e.metaKey || e.ctrlKey) && e.key === 'n') {
-    e.preventDefault();
-    showNewNoteModal();
-  }
+  if ((e.metaKey||e.ctrlKey) && e.key==='s') { e.preventDefault(); saveCurrentNote().then(() => showToast('저장했어요 ✓')); }
+  if ((e.metaKey||e.ctrlKey) && e.key==='n') { e.preventDefault(); showNewNoteModal(); }
 });
-
-// ── Close modals on backdrop click ──
-document.querySelectorAll('.modal-overlay').forEach(el => {
-  el.addEventListener('click', e => { if (e.target === el) el.classList.remove('show'); });
-});
-
-window.addEventListener('resize', () => {
-  if (currentNote && currentNote.type !== 'text') resizeCanvas();
-});
+document.querySelectorAll('.modal-overlay').forEach(el => el.addEventListener('click', e => { if (e.target===el) el.classList.remove('show'); }));
+window.addEventListener('resize', () => { if (currentNote && currentNote.type !== 'text') resizeCanvas(); });
 </script>
 </body>
 </html>
