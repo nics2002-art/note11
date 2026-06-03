@@ -1448,6 +1448,7 @@ function onPointerDown(e) {
 }
 
 function onPointerMove(e) {
+  if (e.pointerType === 'touch') return;
   if (!isDrawing) return;
   e.preventDefault();
   const canvas = document.getElementById('drawing-canvas');
