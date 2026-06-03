@@ -1425,10 +1425,10 @@ function resizeCanvas() {
 }
 
 function setupCanvasEvents(canvas) {
-  canvas.removeEventListener('pointerdown', onPointerDown);
+  canvas.removeEventListener('pointerdown', );
   canvas.removeEventListener('pointermove', onPointerMove);
   canvas.removeEventListener('pointerup', onPointerUp);
-  canvas.addEventListener('pointerdown', onPointerDown);
+  canvas.addEventListener('pointerdown', );
   canvas.addEventListener('pointermove', onPointerMove);
   canvas.addEventListener('pointerup', onPointerUp);
   canvas.addEventListener('pointerleave', onPointerUp);
@@ -1440,6 +1440,7 @@ function getCanvasPos(e, canvas) {
 }
 
 function onPointerDown(e) {
+  if (e.pointerType === 'touch') return;
   e.preventDefault();
   isDrawing = true;
   const pos = getCanvasPos(e, this);
