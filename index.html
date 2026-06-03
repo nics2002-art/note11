@@ -1425,13 +1425,13 @@ function resizeCanvas() {
 }
 
 function setupCanvasEvents(canvas) {
-  canvas.removeEventListener('pointerdown', );
+  canvas.removeEventListener('pointerdown', onPointerDown);  // 빠져있음
   canvas.removeEventListener('pointermove', onPointerMove);
-  canvas.removeEventListener('pointerup', );
-  canvas.addEventListener('pointerdown', );
+  canvas.removeEventListener('pointerup', onPointerUp);      // 빠져있음
+  canvas.addEventListener('pointerdown', onPointerDown);     // 빠져있음
   canvas.addEventListener('pointermove', onPointerMove);
-  canvas.addEventListener('pointerup', );
-  canvas.addEventListener('pointerleave', );
+  canvas.addEventListener('pointerup', onPointerUp);         // 빠져있음
+  canvas.addEventListener('pointerleave', onPointerUp);      // 빠져있음
 }
 
 function getCanvasPos(e, canvas) {
